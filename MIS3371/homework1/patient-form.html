@@ -42,7 +42,11 @@ Description: Fake patient registration form for Horizon Health Solutions -->
 
     <div id="main-form">
       <h2>New Patient Registration</h2>
-      <form action="thankyou.html" method="get">
+      <form
+        action="thankyou.html"
+        method="get"
+        onsubmit="return validateForm();"
+      >
         <table class="form-table">
           <tr>
             <td><label for="fname">Full Name:</label></td>
@@ -54,6 +58,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 placeholder="First Name"
                 maxlength="30"
                 style="width: 30%"
+                required
               />
               <input
                 type="text"
@@ -68,13 +73,22 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 placeholder="Last Name"
                 maxlength="30"
                 style="width: 40%"
+                required
               />
             </td>
           </tr>
           <tr>
             <td><label for="dob">Date of Birth:</label></td>
             <td>
-              <input type="text" id="dob" name="dob" placeholder="MM/DD/YYYY" />
+              <input
+                type="text"
+                id="dob"
+                name="dob"
+                placeholder="MM/DD/YYYY"
+                required
+                pattern="\d{2}/\d{2}/\d{4}"
+                title="Please use MM/DD/YYYY format."
+              />
             </td>
           </tr>
           <tr>
@@ -86,6 +100,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 name="ssn"
                 maxlength="11"
                 placeholder="***-**-****"
+                required
               />
             </td>
           </tr>
@@ -98,6 +113,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 name="address1"
                 placeholder="Address Line 1"
                 maxlength="30"
+                required
               />
             </td>
           </tr>
@@ -121,8 +137,9 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 placeholder="City"
                 maxlength="30"
                 style="width: 40%"
+                required
               />
-              <select name="state" style="width: 30%">
+              <select name="state" style="width: 30%" required>
                 <option value="">--Select State--</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
@@ -183,6 +200,9 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 placeholder="Zip Code"
                 maxlength="10"
                 style="width: 15%"
+                required
+                pattern="\d{5}(-\d{4})?"
+                title="Please use 5 or 9 digit zip code."
               />
             </td>
           </tr>
@@ -194,6 +214,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 id="email"
                 name="email"
                 placeholder="name@domain.com"
+                required
               />
             </td>
           </tr>
@@ -319,17 +340,38 @@ Description: Fake patient registration form for Horizon Health Solutions -->
           <tr>
             <td><label for="userid">Desired User ID:</label></td>
             <td>
-              <input type="text" id="userid" name="userid" maxlength="20" />
+              <input
+                type="text"
+                id="userid"
+                name="userid"
+                maxlength="20"
+                required
+                minlength="6"
+              />
             </td>
           </tr>
           <tr>
             <td><label for="pass1">Password:</label></td>
-            <td><input type="password" id="pass1" name="password" /></td>
+            <td>
+              <input
+                type="password"
+                id="pass1"
+                name="password"
+                required
+                minlength="8"
+              />
+            </td>
           </tr>
           <tr>
             <td><label for="pass2">Re-enter Password:</label></td>
             <td>
-              <input type="password" id="pass2" name="password_confirm" />
+              <input
+                type="password"
+                id="pass2"
+                name="password_confirm"
+                required
+                minlength="8"
+              />
             </td>
           </tr>
           <tr>
@@ -349,5 +391,17 @@ Description: Fake patient registration form for Horizon Health Solutions -->
         Contact Us
       </button>
     </div>
+
+    <script>
+      function validateForm() {
+        const pass1 = document.getElementById("pass1").value;
+        const pass2 = document.getElementById("pass2").value;
+        if (pass1 !== pass2) {
+          alert("Passwords do not match. Please try again.");
+          return false;
+        }
+        return true;
+      }
+    </script>
   </body>
 </html>
