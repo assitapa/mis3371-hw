@@ -14,6 +14,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
     <link href="../../styles.css" rel="stylesheet" />
   </head>
   <body>
+    <!-- Header banner with logo and current date -->
     <div id="banner">
       <h1>
         <img
@@ -26,6 +27,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
         Horizon Health Solutions
       </h1>
       <p id="date-display">
+        <!-- JavaScript to display current date -->
         <script>
           const today = new Date();
           const options = {
@@ -40,6 +42,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
       </p>
     </div>
 
+    <!-- Main registration form -->
     <div id="main-form">
       <h2>New Patient Registration</h2>
       <form
@@ -48,6 +51,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
         onsubmit="return validateForm();"
       >
         <table class="form-table">
+          <!-- Personal Information Section -->
           <tr>
             <td><label for="fname">Full Name:</label></td>
             <td>
@@ -94,6 +98,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
           <tr>
             <td><label for="ssn">Social Security Number:</label></td>
             <td>
+              <!-- Using password type for security -->
               <input
                 type="password"
                 id="ssn"
@@ -104,6 +109,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               />
             </td>
           </tr>
+          <!-- Address Information Section -->
           <tr>
             <td><label for="address1">Address:</label></td>
             <td>
@@ -131,6 +137,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
           <tr>
             <td></td>
             <td>
+              <!-- City, State, and Zip in one row -->
               <input
                 type="text"
                 name="city"
@@ -139,6 +146,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 style="width: 40%"
                 required
               />
+              <!-- Dropdown for all US states -->
               <select name="state" style="width: 30%" required>
                 <option value="">--Select State--</option>
                 <option value="AL">Alabama</option>
@@ -194,6 +202,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
               </select>
+              <!-- Supports both 5 and 9 digit zip codes -->
               <input
                 type="text"
                 name="zip"
@@ -206,6 +215,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               />
             </td>
           </tr>
+          <!-- Contact and Medical Information Section -->
           <tr>
             <td><label for="email">Email Address:</label></td>
             <td>
@@ -230,8 +240,10 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               ></textarea>
             </td>
           </tr>
+          <!-- Medical History and Demographics Section -->
           <tr>
             <td colspan="2" class="checkbox-group">
+              <!-- Checkbox group for medical conditions -->
               <fieldset>
                 <legend>
                   Check all of the following conditions you have had:
@@ -269,6 +281,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
           </tr>
           <tr>
             <td colspan="2" class="radio-group">
+              <!-- Radio button groups for demographics and health info -->
               <fieldset>
                 <legend>Gender</legend>
                 <input
@@ -325,6 +338,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
           <tr>
             <td><label for="health_scale">Current Health:</label></td>
             <td class="slider-cell">
+              <!-- Health rating slider from 1-10 -->
               <span>Poor</span>
               <input
                 type="range"
@@ -337,6 +351,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               <span>Good</span>
             </td>
           </tr>
+          <!-- User Account Credentials Section -->
           <tr>
             <td><label for="userid">Desired User ID:</label></td>
             <td>
@@ -376,6 +391,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
           </tr>
           <tr>
             <td colspan="2" style="text-align: center">
+              <!-- Form action buttons -->
               <button type="reset">CLEAR AND START OVER</button>
               <button type="submit">Submit</button>
             </td>
@@ -384,6 +400,7 @@ Description: Fake patient registration form for Horizon Health Solutions -->
       </form>
     </div>
 
+    <!-- Footer section with contact information -->
     <div class="footer">
       <p>Horizon Health Solutions</p>
       <p>PO BOX 18881, Sugar Land TX 77496</p>
@@ -392,10 +409,12 @@ Description: Fake patient registration form for Horizon Health Solutions -->
       </button>
     </div>
 
+    <!-- Client-side form validation script -->
     <script>
       function validateForm() {
         const pass1 = document.getElementById("pass1").value;
         const pass2 = document.getElementById("pass2").value;
+        // Check if passwords match before submitting
         if (pass1 !== pass2) {
           alert("Passwords do not match. Please try again.");
           return false;
