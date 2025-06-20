@@ -1,0 +1,59 @@
+<!--
+Program name: thankyou.html
+Author: Abhi Sitapara
+Date created: 06/08/2025
+Date last edited: 06/20/2025
+Version: 2.0
+Description: Thank you page for Horizon Health Solutions patient registration form -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submission Received</title>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Header banner with logo and current date -->
+    <div id="banner">
+      <h1>
+        <img src="../../images/logo.png" alt="Horizon Health Solutions Logo" width="40" height="40" style="vertical-align: bottom" />
+        Horizon Health Solutions
+      </h1>
+      <p id="date-display">
+        <!-- JavaScript to display current date -->
+        <script>
+          const today = new Date();
+          const options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          };
+          document.getElementById("date-display").innerHTML =
+            "Today is: " + today.toLocaleDateString("en-US", options);
+        </script>
+      </p>
+    </div>
+
+    <!-- Thank you message section -->
+    <div id="thankyou-form">
+      <h1>Thank you for your submission.</h1>
+      <p style="text-align: center">
+        A member of our team will be in touch with you shortly.
+      </p>
+      <p style="text-align: center">
+        <a href="patient-form.html">Return to the form</a>
+      </p>
+    </div>
+
+    <!-- Footer section with contact information -->
+    <div class="footer">
+      <p>Horizon Health Solutions</p>
+      <p>PO BOX 18881, Sugar Land TX 77496</p>
+      <button onclick="alert('Contact us at contact@horizonhealth.com');">
+        Contact Us
+      </button>
+    </div>
+  </body>
+</html>

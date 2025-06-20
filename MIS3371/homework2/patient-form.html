@@ -2,8 +2,8 @@
 Program name: patient-form.html
 Author: Abhi Sitapara
 Date created: 06/08/2025
-Date last edited: 06/12/2025
-Version: 1.0
+Date last edited: 06/20/2025
+Version: 2.0
 Description: Fake patient registration form for Horizon Health Solutions -->
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,8 @@ Description: Fake patient registration form for Horizon Health Solutions -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Patient Registration Form</title>
-    <link href="style.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
     <!-- Header banner with logo and current date -->
@@ -59,25 +60,33 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 type="text"
                 id="fname"
                 name="firstname"
-                placeholder="First Name"
+                placeholder="First Name (req)"
+                title="Please enter your first name (letters, apostrophes, dashes)."
                 maxlength="30"
                 style="width: 30%"
                 required
+                pattern="[a-zA-Z'-]+"
               />
               <input
                 type="text"
+                id="minitial"
                 name="minitial"
                 placeholder="MI"
+                title="Please enter your middle initial (one letter)."
                 maxlength="1"
                 style="width: 5%"
+                pattern="[a-zA-Z]?"
               />
               <input
                 type="text"
+                id="lname"
                 name="lastname"
-                placeholder="Last Name"
+                placeholder="Last Name (req)"
+                title="Please enter your last name (letters, apostrophes, dashes)."
                 maxlength="30"
                 style="width: 40%"
                 required
+                pattern="[a-zA-Z'-]+"
               />
             </td>
           </tr>
@@ -85,13 +94,11 @@ Description: Fake patient registration form for Horizon Health Solutions -->
             <td><label for="dob">Date of Birth:</label></td>
             <td>
               <input
-                type="text"
+                type="date"
                 id="dob"
                 name="dob"
-                placeholder="MM/DD/YYYY"
+                title="Please enter your date of birth. Cannot be in the future or more than 120 years ago."
                 required
-                pattern="\d{2}/\d{2}/\d{4}"
-                title="Please use MM/DD/YYYY format."
               />
             </td>
           </tr>
@@ -102,10 +109,12 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               <input
                 type="password"
                 id="ssn"
+                title="Please enter your 9-digit social security number (XXX-XX-XXXX)."
                 name="ssn"
                 maxlength="11"
-                placeholder="***-**-****"
+                placeholder="***-**-**** (req)"
                 required
+                pattern="\d{3}-\d{2}-\d{4}"
               />
             </td>
           </tr>
@@ -116,9 +125,11 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               <input
                 type="text"
                 id="address1"
+                title="Please enter first line of your address (2-30 characters)."
                 name="address1"
-                placeholder="Address Line 1"
+                placeholder="Address Line 1 (req)"
                 maxlength="30"
+                minlength="2"
                 required
               />
             </td>
@@ -128,9 +139,12 @@ Description: Fake patient registration form for Horizon Health Solutions -->
             <td>
               <input
                 type="text"
+                id="address2"
                 name="address2"
+                title="Please enter the second line of your address (2-30 characters)."
                 placeholder="Address Line 2"
                 maxlength="30"
+                minlength="2"
               />
             </td>
           </tr>
@@ -140,15 +154,18 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               <!-- City, State, and Zip in one row -->
               <input
                 type="text"
+                id="city"
                 name="city"
-                placeholder="City"
+                placeholder="City (req)"
+                title="Please enter your city (2-30 characters)."
                 maxlength="30"
+                minlength="2"
                 style="width: 40%"
                 required
               />
               <!-- Dropdown for all US states -->
-              <select name="state" style="width: 30%" required>
-                <option value="">--Select State--</option>
+              <select id="state" name="state" title="Please select your state." style="width: 30%" required>
+                <option value="">--Select State-- (req)</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
@@ -205,13 +222,14 @@ Description: Fake patient registration form for Horizon Health Solutions -->
               <!-- Supports both 5 and 9 digit zip codes -->
               <input
                 type="text"
+                id="zip"
                 name="zip"
-                placeholder="Zip Code"
+                placeholder="Zip Code (req)"
                 maxlength="10"
-                style="width: 15%"
+                style="width: 20%"
                 required
                 pattern="\d{5}(-\d{4})?"
-                title="Please use 5 or 9 digit zip code."
+                title="Please use 5 or 9 digit zip code format (e.g., 12345 or 12345-6789)."
               />
             </td>
           </tr>
@@ -223,8 +241,23 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 type="email"
                 id="email"
                 name="email"
-                placeholder="name@domain.com"
+                placeholder="name@domain.com (req)"
+                title="Please enter a valid email address."
                 required
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="phone">Phone Number:</label></td>
+            <td>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="123-456-7890 (req)"
+                title="Please enter a valid 10-digit phone number (e.g., 123-456-7890)."
+                required
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               />
             </td>
           </tr>
@@ -236,7 +269,9 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 name="symptoms"
                 rows="3"
                 cols="50"
-                placeholder="Describe your current symptoms..."
+                placeholder="Describe your current symptoms... (no double quotes)"
+                title="Please describe your symptoms. Double quotes are not allowed."
+                pattern="[^\"]*"
               ></textarea>
             </td>
           </tr>
@@ -346,9 +381,12 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 name="health_scale"
                 min="1"
                 max="10"
+                value="5"
                 style="width: 70%"
+                oninput="updateHealthValue(this.value)"
               />
               <span>Good</span>
+              <span id="health-value" style="font-weight: bold; margin-left: 10px;">5</span>
             </td>
           </tr>
           <!-- User Account Credentials Section -->
@@ -361,7 +399,11 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 name="userid"
                 maxlength="20"
                 required
-                minlength="6"
+                minlength="5"
+                maxlength="30"
+                pattern="[a-zA-Z][a-zA-Z0-9_-]{4,29}"
+                title="5-30 characters, must start with a letter, no spaces or special characters other than _ or -."
+                onblur="this.value = this.value.toLowerCase()"
               />
             </td>
           </tr>
@@ -374,6 +416,8 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 name="password"
                 required
                 minlength="8"
+                maxlength="30"
+                title="8-30 characters, must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
               />
             </td>
           </tr>
@@ -386,6 +430,8 @@ Description: Fake patient registration form for Horizon Health Solutions -->
                 name="password_confirm"
                 required
                 minlength="8"
+                maxlength="30"
+                title="Please re-enter your password to confirm."
               />
             </td>
           </tr>
@@ -393,11 +439,22 @@ Description: Fake patient registration form for Horizon Health Solutions -->
             <td colspan="2" style="text-align: center">
               <!-- Form action buttons -->
               <button type="reset">CLEAR AND START OVER</button>
-              <button type="submit">Submit</button>
+              <button type="button" onclick="reviewAndValidate()">Review</button>
+              <button type="submit" id="submit-button">Submit</button>
             </td>
           </tr>
         </table>
       </form>
+    </div>
+
+    <div id="review-section" style="display: none;">
+      <h2>Review Your Information</h2>
+      <p>Please review your information before submitting. Errors are marked and must be corrected.</p>
+      <div id="review-output"></div>
+      <div style="text-align: center;">
+        <button onclick="document.getElementById('main-form').scrollIntoView({behavior: 'smooth'});">Back to Form</button>
+        <button type="submit" form="main-form-id" id="final-submit-button">Confirm and Submit</button>
+      </div>
     </div>
 
     <!-- Footer section with contact information -->
@@ -419,7 +476,9 @@ Description: Fake patient registration form for Horizon Health Solutions -->
           alert("Passwords do not match. Please try again.");
           return false;
         }
-        return true;
+        // A more robust validation will happen on review
+        // This is a final check
+        return !document.getElementById('submit-button').disabled;
       }
     </script>
   </body>
