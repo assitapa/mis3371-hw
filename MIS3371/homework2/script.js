@@ -65,7 +65,7 @@ function reviewAndValidate() {
     const health_scale = document.getElementById('health_scale').value;
     const gender = document.querySelector('input[name="gender"]:checked')?.value;
     const insurance = document.querySelector('input[name="insurance"]:checked')?.value;
-    const vaccinated = document.querySelector('input[name="vaccinated"]:checked')?.value || 'No';
+    const vaccinated = document.querySelector('input[name="vaccinated"]:checked')?.value;
     const userid = document.getElementById('userid').value;
     const pass1 = document.getElementById('pass1').value;
     const pass2 = document.getElementById('pass2').value;
