@@ -3,9 +3,59 @@ Program name: script.js
 Author: Abhi Sitapara
 Date created: 06/08/2025
 Date last edited: 06/30/2025
-Version: 3.0
-Description: Refactored and enhanced JavaScript with real-time validation for patient registration form 
+Version: 4.0
+Description: Refactored and enhanced JavaScript with real-time validation and cookie management for patient registration form 
 */
+
+// Cookie Management Functions
+const CookieManager = {
+    // Set a cookie with expiration in hours
+    setCookie: function(name, value, hours = 48) {
+        const date = new Date();
+        date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+    },
+    
+    // Get a cookie value by name
+    getCookie: function(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+        return null;
+    },
+    
+    // Delete a cookie by setting expiration to past date
+    deleteCookie: function(name) {
+        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    },
+    
+    // Save user data to cookie
+    saveUserData: function(firstName, lastName, email) {
+        const userData = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            timestamp: new Date().toISOString()
+        };
+        this.setCookie('patientData', JSON.stringify(userData), 48);
+    },
+    
+    // Get user data from cookie
+    getUserData: function() {
+        const data = this.getCookie('patientData');
+        return data ? JSON.parse(data) : null;
+    },
+    
+    // Clear all user data
+    clearUserData: function() {
+        this.deleteCookie('patientData');
+    }
+};
 
 // Configuration for all fields to be validated. Each key corresponds to an input's ID.
 
@@ -200,13 +250,16 @@ const validationState = {};
 
 // Event listener for when the DOM content is fully loaded.
 // Initializes the form by hiding the review section, setting date constraints,
-// updating health slider, setting up field validation listeners, and updating submit button state.
+// updating health slider, setting up field validation listeners, updating submit button state,
+// and managing welcome messages based on cookie data.
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('review-section').style.display = 'none';
     setupDateConstraints();
     updateHealthValue(document.getElementById('health_scale').value);
     initializeValidation();
     updateSubmitButtonState();
+    setupWelcomeMessage();
+    setupRememberMeHandlers();
 });
 
 //Sets the minimum and maximum date constraints for the Date of Birth input field.
@@ -422,6 +475,20 @@ function hideReviewSection() {
 
 //Submits the patient registration form.
 function submitForm() {
+    // Save user data to cookie if remember me is checked
+    if (document.getElementById('remember-me').checked) {
+        const firstName = document.getElementById('fname').value.trim();
+        const lastName = document.getElementById('lname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        
+        if (firstName && lastName && email) {
+            CookieManager.saveUserData(firstName, lastName, email);
+        }
+    } else {
+        // If remember me is not checked, clear any existing cookie data
+        CookieManager.clearUserData();
+    }
+    
     document.getElementById('patient-form').submit();
 }
 
@@ -441,4 +508,100 @@ function clearForm() {
     updateSubmitButtonState(); // Update submit button state
     hideReviewSection(); // Hide review section
     updateHealthValue(5); // Reset health slider to default
+    // Reset remember me checkbox to checked
+    document.getElementById('remember-me').checked = true;
+}
+
+// Setup welcome message based on existing cookie data
+function setupWelcomeMessage() {
+    const welcomeDiv = document.getElementById('welcome-message');
+    const userData = CookieManager.getUserData();
+    
+    if (userData && userData.firstName) {
+        // Returning user - show welcome back message and "Not [Name]" option
+        welcomeDiv.innerHTML = `
+            <h3 style="color: #28a745; margin: 5px 0;">Welcome back, ${userData.firstName}!</h3>
+            <div style="margin-top: 10px;">
+                <input type="checkbox" id="not-user-checkbox" onchange="handleNotUserChange()" />
+                <label for="not-user-checkbox" style="color: #dc3545; font-weight: bold;">
+                    Not ${userData.firstName}? Click here to start as a NEW USER
+                </label>
+            </div>
+        `;
+        
+        // Pre-populate form fields with saved data if remember me would be checked
+        if (document.getElementById('remember-me').checked) {
+            populateFormFromCookie(userData);
+        }
+    } else {
+        // New user - show welcome new user message
+        welcomeDiv.innerHTML = `
+            <h3 style="color: #007bff; margin: 5px 0;">Welcome New User!</h3>
+            <p style="margin: 5px 0; color: #666;">Please fill out the form below for your first visit.</p>
+        `;
+    }
+}
+
+// Handle the "Not [Name]" checkbox change
+function handleNotUserChange() {
+    const checkbox = document.getElementById('not-user-checkbox');
+    if (checkbox.checked) {
+        // User clicked "Not [Name]" - clear cookie and restart as new user
+        CookieManager.clearUserData();
+        clearForm();
+        setupWelcomeMessage(); // Refresh welcome message
+        checkbox.checked = false; // Reset the checkbox
+    }
+}
+
+// Populate form fields from cookie data
+function populateFormFromCookie(userData) {
+    if (userData.firstName) document.getElementById('fname').value = userData.firstName;
+    if (userData.lastName) document.getElementById('lname').value = userData.lastName;
+    if (userData.email) document.getElementById('email').value = userData.email;
+    
+    // Trigger validation for populated fields
+    ['fname', 'lname', 'email'].forEach(id => {
+        const input = document.getElementById(id);
+        if (input.value) {
+            handleValidation(input);
+        }
+    });
+}
+
+// Setup event handlers for remember me functionality
+function setupRememberMeHandlers() {
+    const rememberMeCheckbox = document.getElementById('remember-me');
+    
+    // Handle remember me checkbox changes
+    rememberMeCheckbox.addEventListener('change', function() {
+        if (!this.checked) {
+            // If unchecked, clear cookie data
+            CookieManager.clearUserData();
+        } else {
+            // If checked, save current data if form has valid name and email
+            const firstName = document.getElementById('fname').value.trim();
+            const lastName = document.getElementById('lname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            
+            if (firstName && lastName && email) {
+                CookieManager.saveUserData(firstName, lastName, email);
+            }
+        }
+    });
+    
+    // Save data when form fields change (if remember me is checked)
+    ['fname', 'lname', 'email'].forEach(id => {
+        document.getElementById(id).addEventListener('blur', function() {
+            if (document.getElementById('remember-me').checked) {
+                const firstName = document.getElementById('fname').value.trim();
+                const lastName = document.getElementById('lname').value.trim();
+                const email = document.getElementById('email').value.trim();
+                
+                if (firstName && lastName && email) {
+                    CookieManager.saveUserData(firstName, lastName, email);
+                }
+            }
+        });
+    });
 } 

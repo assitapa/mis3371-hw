@@ -124,6 +124,28 @@ a:hover {
   font-size: 0.9em;
 }
 
+#welcome-message {
+  background-color: #f0f8ff !important;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+}
+
+#welcome-message h3 {
+  margin: 5px 0 !important;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#not-user-checkbox {
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+#remember-me {
+  margin-right: 8px;
+  transform: scale(1.1);
+}
+
 #main-form, #review-section, #thankyou-form {
   background-color: #ffffff;
   margin: 20px auto;

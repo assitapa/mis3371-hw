@@ -25,6 +25,12 @@ Description: Enhanced patient registration form with real-time JavaScript valida
         style="vertical-align: bottom" />
       Horizon Health Solutions
     </h1>
+    
+    <!-- Welcome message area -->
+    <div id="welcome-message" style="background-color: #f0f8ff; padding: 10px; margin: 10px 0; border-radius: 5px; text-align: center;">
+      <!-- JavaScript will populate this area -->
+    </div>
+    
     <p id="date-display">
       <!-- JavaScript to display current date -->
       <script>
@@ -268,6 +274,14 @@ Description: Enhanced patient registration form with real-time JavaScript valida
             <input type="password" id="pass2" name="password_confirm" required minlength="8" maxlength="30"
               title="Please re-enter your password to confirm it matches." placeholder="Confirm password (req)" />
             <div class="error-message" id="pass2-error"></div>
+          </td>
+        </tr>
+        <!-- Remember Me Section -->
+        <tr>
+          <td colspan="2" style="text-align: center; padding: 15px;">
+            <input type="checkbox" id="remember-me" name="remember-me" checked 
+                   title="Check this to remember your information for future visits (expires in 48 hours)" />
+            <label for="remember-me" style="font-weight: bold; color: #007bff;">Remember me for future visits (48 hours)</label>
           </td>
         </tr>
         <!-- Form Action Buttons -->
